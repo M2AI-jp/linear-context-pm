@@ -1,0 +1,4 @@
+interface:
+  display_name: "Linear Context PM"
+  short_description: "Design clean Linear context control loops"
+  default_prompt: "Use $linear-context-pm to design or audit a clean PM context loop in Linear."
