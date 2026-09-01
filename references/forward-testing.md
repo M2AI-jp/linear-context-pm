@@ -1,65 +1,76 @@
-# Independent Forward-Testing
+# Independent Forward-Testing — Coordinator/Evaluator Only
 
-This reference is for the PM coordinator and independent evaluator, never the fresh executor. Test whether the Skill produces useful behavior on the user's real unresolved work; do not design a prompt to make it pass.
+This reference is only for the test coordinator and post-run evaluator. Never give it to the fresh executor. Use forward-testing to observe whether this skill changes an independent agent's decisions safely. It is not a wording test and must not be shaped to certify a desired result.
 
-## Roles and packet
+## Independence boundary
 
-Use three functions: a PM coordinator, a fresh executor, and an independent evaluator. The coordinator may be the Skill author or reviser; no additional coordinator agent is required. The author or reviser must not evaluate their own change. The executor receives no inherited task history beyond the packet, and the evaluator sees the run only after it finishes.
+Keep Skill author/reviser, coordinator, fresh executor, and post-run evaluator as separate roles. The author is neither executor nor evaluator. The coordinator freezes the Skill version and input packet before execution and does not coach, correct, or supply intermediate hints. The evaluator reviews only the completed run and preserved primary artifacts; it does not alter the executor's task.
 
-The coordinator freezes and gives the executor only:
+Give the fresh executor only:
 
-1. the Skill version and `SKILL.md`, plus `references/framework.md` when the request requires it;
-2. the exact, complete multi-turn user originals needed to understand the active request and customer outcome; and
-3. the current SSoT, repository material, and authorized raw Linear or external inputs required by that request.
+1. the frozen `SKILL.md`;
+2. the user's unmodified realistic request;
+3. `references/framework.md` only when the task itself requires it; and
+4. the minimum raw primary artifacts genuinely needed by that request.
 
-Multi-turn user originals are primary input, not prohibited history. Preserve user-authored critiques and failure history that are part of the active request. Exclude assistant conclusions and summaries, `<codex_delegation>` work reports, and hidden coaching from the skill author, coordinator, or evaluator: defect lists, scoring rules, expected answers, proposed fixes, and prior verdicts not authored by the user as part of the request. Never give the executor this file or tell it how to pass. Missing primary material remains unknown; do not replace it with a summary.
-
-Prefer an existing unresolved real request and its authorized primary materials. Do not ask the user to invent a new test prompt. Use a synthetic case only when no suitable real case exists or the user explicitly requests one, and do not claim generalization from that run.
+Do **not** give the executor this `forward-testing.md`, conversation history, an expected answer, scoring criteria, known defects, proposed corrections, earlier outputs, past conclusions, or a description of how to pass. Do not tell the executor that the Skill is being tested. Do not paraphrase the user request to insert desired behavior. Enforce isolation and permissions through the test environment rather than a coaching brief. If primary material is absent, absence must remain an observable unknown rather than being filled with a summary.
 
 ## Isolation and recording
 
-- For an answer-only simulation, a fresh context and disabled live mutations are sufficient; create no workspace or artifact merely for isolation.
-- If the run can generate artifacts or side effects, use an isolated workspace and keep live Linear, repositories, browsers, accounts, and production disconnected or read-only unless the user separately authorized that exact test mutation.
-- Record the Skill version, model and reasoning configuration, exact user-original packet, raw output, and actual side effects. Add timestamps, tool-action logs, or other evidence only when a named risk requires them.
-- Preserve refusals, failures, unknowns, and missing evidence rather than converting them into success.
+- Use an isolated temporary workspace for generated artifacts.
+- Keep live Linear, repositories, browsers, accounts, production, and external data read-only or disconnected unless the user separately authorizes a specific test mutation.
+- Use mocks only to contain side effects, never to claim a real outcome.
+- Record the exact input packet, Skill version and integrity identifier, model and reasoning configuration, tool/permission boundary, start/end time, raw output, generated artifacts, tool actions, and observed side effects.
+- Preserve failures, refusals, unknowns, and missing evidence with the same fidelity as apparent successes.
+
+If isolation or faithful recording cannot be established, do not run the test.
 
 ## Execution
 
-1. Freeze the Skill and assemble the non-leading packet.
-2. Let the fresh executor complete the request without coaching or mid-run correction.
-3. Preserve its raw response and actual side effects.
-4. Only then let the independent evaluator compare behavior with the user originals and primary state.
+1. Freeze and identify the Skill version.
+2. Assemble the non-leading packet above without expected results or prior analysis.
+3. Start a fresh executor with no inherited task history and no notice that it is participating in a Skill test.
+4. Let it complete the realistic request without author intervention.
+5. Preserve the actual response, artifacts, actions, stops, and side effects.
+6. Only after completion, evaluate observed decisions against the user's request and primary evidence.
 
-Evaluate six things, by behavior rather than terminology:
+The evaluator looks for behavior, not particular headings, words, issue counts, or plan length:
 
-1. **Customer outcome:** the user's original outcome, not the framework or a proxy, remains the highest decision criterion.
-2. **Existing `X`:** the executor uses available user originals, SSoT, repository, and authorized state before requesting or inventing input, while keeping reusable invariants separate from project-specific facts.
-3. **No speculation or over-management:** it creates neither unsupported architecture or backlog nor controls, records, agents, and stops without a concrete need; fail-closed behavior is scoped to the affected action.
-4. **E2E and independence:** acceptance is defined in customer language, tests can falsify it, prohibited effects are covered, and required test and implementation reviews are independent.
-5. **Atomic delegation:** only the next bounded target is planned, all necessary in-boundary authority is granted once, and the worker is autonomous until completion or a predeclared consolidated blocker.
-6. **Accepted `Y` only:** claims rely on provenance-bearing observation rather than links, counts, commands, or agent assertions; changed decisions stale their dependents and only accepted output enters the next `X`.
+- it separates Common Kernel rules from target-specific Project Profile facts;
+- it discovers material unknowns and uses read-only inventory before finalizing scope;
+- it stops before unauthorized or under-specified implementation and states a precise resumption condition;
+- it creates only next-gate blockers instead of a speculative full backlog;
+- it preserves user originals, authority, provenance, and the distinction between confirmed, proposed, unknown, and stale;
+- it demands evidence capable of proving or falsifying the customer outcome and rejects links, counts, commands, and agent claims as standalone proof;
+- it treats tests as context requiring independent qualitative review and detects bypasses or proxy success;
+- it propagates changed Decisions to active work, deployed state, and external effects with stop, rollback, compensation, or reconciliation as appropriate;
+- it maps atomic work without assuming code or a particular service, and generalizes safely to non-code systems;
+- it keeps the Context Manifest minimal and removes obsolete material from active `X` without erasing necessary history.
 
-Mentioning these concepts is not success. Judge what the proposed actions, authority, evidence, and stops would actually do in the supplied case.
+A run is not successful merely because it mentions these concepts. Judge whether its proposed sequence, state transitions, evidence, and stops would actually prevent unsupported work and whether it remains minimal for the supplied case.
 
 ## Invalid tests
 
 Discard the run as evidence if:
 
-- the packet contains non-user or hidden coaching from the skill author, coordinator, or evaluator, such as the intended solution, defect list, rubric, expected answer, proposed fix, or prior verdict; active-request user originals do not invalidate the run;
-- the author or reviser evaluates their own change;
-- evaluation scores wording, headings, volume, or agreement instead of behavior;
-- the run exceeds authority, fabricates an observation, or reports missing evidence as success.
+- the executor received the intended solution, defect list, patch plan, earlier verdict, or hidden coaching;
+- the Skill author acted as the independent executor or changed the Skill during the run;
+- the prompt was rewritten to elicit Skill terminology or match a rubric;
+- evaluation scores formatting, keywords, volume, or agreement instead of behavior and artifacts;
+- the run touched live state outside explicit authority;
+- missing logs, side effects, or evidence were reported as success;
+- a claimed observation was fabricated or inferred from an artifact's mere existence.
 
-Report an invalid run as invalid; do not lead the next executor more heavily to obtain a pass.
+Report an invalid test as invalid; do not repeat it with a more leading prompt to obtain a pass.
 
-## Refinement from observations
+## Version updates from observations
 
-Revise only from a concrete observed failure:
+Revise the Skill only from a concrete observed failure. Record:
 
 ```text
 observation -> user or safety impact -> failure mechanism -> smallest general correction
 ```
 
-Multiple independent audits are not a vote or a change backlog. Treat them as separate observations, and keep only corrections that trace to the user originals and reduce a demonstrated failure without adding proxy work.
+Keep the correction narrow, preserve explicit user choices, and avoid turning one Project Profile's detail into a universal rule. Do not add rules solely to make the tested answer resemble an expected answer. Identify the revised version, then use a fresh independent executor to check the changed behavior under the same unmodified request; use an unseen realistic request as well before claiming broad generalization when that claim matters.
 
-Prefer deleting or combining rules before adding one. Preserve explicit user choices, keep project-specific details out of reusable rules, and do not optimize for the evaluator's expected wording. A rerun shows only what happened on that request; it does not prove generalization. Report the packet, version and model, observed behavior, evidence gaps, side effects, and the smallest justified correction—not a pass count or self-review verdict.
+The report must identify the input packet, frozen version, executor configuration, observed output/actions, evidence and gaps, behavioral findings, side effects, and any narrowly justified update. A pass count or self-review is never the conclusion.

@@ -1,55 +1,77 @@
 ---
 name: linear-context-pm
-description: "Design or audit Linear-centered PM context for AI/Codex work: source inputs, decisions, accepted outputs, atomic delegation, E2E acceptance, test review, and stale-context cleanup. Use for reusable governance or project onboarding; not ordinary one-off Linear data entry."
+description: Design or audit Linear-centered PM context systems for AI/Codex-driven work, including project discovery, SSoT, evidence, gates, tests, and stale-context removal. Use for reusable development governance or project onboarding; do not use for ordinary one-off Linear data entry.
 metadata:
-  version: "0.5.0"
+  version: "0.2.1"
 ---
 
 # Linear Context PM
 
-Keep the project input `X` clean so AI/Codex work converges on the customer or user outcome in the user's original words:
+Use Linear as the PM control plane for keeping the project-specific input context `X` clean across AI/Codex sessions:
 
 ```text
-Y = F(X)
-current X -> smallest justified action -> Y -> independent acceptance -> accepted Y only -> next X
+unknown X0 -> investigated and governed X1 -> model output Y
+           -> independent verification -> accepted Y only -> next X
 ```
 
-`X` includes the relevant user originals, governed facts with their SSoT (authoritative source and conflict rule), decisions, repository/code/tests, and authorized Linear or external context. Linear externalizes PM context: goals, decisions, plans, approvals, owners, stale or blocked state, and acceptance evidence references. It must not duplicate raw Git, CI, repository, browser, account, or external-service logs; those systems remain authoritative for their own state.
+The repository and external-system state are parts of `X`; Linear is not a replacement for either. Git and CI retain code changes and raw development logs. Linear retains goals, unknowns, decisions, state, evidence references, approval, and the reasoning that cannot be reconstructed from Git.
 
 ## Scope and authority
 
-- Apply this skill to designing, onboarding, simulating, or auditing a Linear-centered context system.
+- Apply this skill to designing, onboarding, simulating, or auditing this governance system.
 - Do not apply it to an ordinary one-time request to create, edit, or triage Linear items.
-- Design, explanation, simulation, and audit do not authorize writes. Mutate Linear, a repository, a browser, or another system only within the user's explicit authority.
-- Apply only the controls, roles, records, reviews, tests, issues, PRs, artifacts, and acceptance evidence references required by the authorized action and the actual customer/user or implementation claim. If the authorized action is Linear planning, required issues include fine-grained inactive decomposition for the accepted known scope, not only execution-active work. For answer-only, audit, discovery, or no-implementation work, do not create Linear records, issues, PRs, tests, reviewers, artifacts, or external side effects unless explicitly authorized or needed for that action.
+- A request to design, simulate, explain, or audit does not authorize writes to Linear, repositories, browsers, SaaS products, or production systems.
+- Mutate Linear or an external system only when the user explicitly authorizes that mutation and its scope.
+- Treat project examples as Project Profiles, not universal rules. Never universalize a provider, language, repository layout, data store, or interaction mode from one example.
 
-## Execution loop
+## Declare context before proceeding
 
-Use initiate, plan, execute, monitor/control, and close as PM verbs, not as required document names or response headings.
+At the start of each material stage and after any change of direction, state concisely:
 
-1. **Read current `X`.** Read the user's original wording and the full user-origin thread that produced the current request before acting. When source history is mixed, declare the active work frame by explicitly separating the current request and outcome, past examples or failures, non-goals, authority boundary, and current versus historical evidence; omit absent categories and do not force headings for simple cases. Attribute each constraint to its source without softening it into vague attribution. Past project outcomes constrain design only as evidence or prohibited effects unless the user explicitly reopens them as current. Then read the current SSoT, active decisions, repository/code/tests, and authorized Linear or external state needed for the next action. Recency alone is not authority. Keep confirmed facts, proposals, unknowns, authority, prohibited effects, and stop conditions distinct; inference is not confirmation.
-2. **Fix the outcome from evidence.** After the necessary read-only discovery, state the customer/user outcome, non-goals, scope, and authority. If the outcome, authority, target, or prohibited effect remains ambiguous and would change the next action, stop and ask one focused question; otherwise continue safe discovery without inventing requirements. Reuse confirmed facts unless a concrete contradiction or named irreversible risk reopens them. Output only blockers that affect the next authorized action or the customer/user outcome.
-3. **Define acceptance before implementation.** Express the smallest useful E2E happy, failure, and regression paths in customer/user language, including prohibited side effects. The tests must fail when the claimed experience is false; their existence, count, or internal coverage is not acceptance. A reviewer independent of the implementation qualitatively checks falsifiability and proxy-metric risk. Accepted tests and scenarios become durable context for future work and stale only when affected by a changed decision. When human-only verification is impractical, project setup should define automated or simulated coverage and reserve human verification for final acceptance.
-4. **Separate decomposition from execution.** Minimize code, files, dependencies, cost, simultaneous execution, and active `X`; do not minimize the number of useful Linear issues. For Linear planning, decompose the known scope into the finest justified atomic issues. More issues are correct when each issue isolates a distinct failure range with its own target, dependency or consumer, and acceptance. Future issues may exist as inactive planning context; they must not authorize implementation, worker assignment, review, merge, or Done. Only the current checkpoint receives execution authority. Replacement of stale work means removing obsolete material from active `X` while preserving or recreating the required atomic decomposition for the accepted scope. A checkpoint is a boundary with accepted input, process, output, dependencies, downstream consumers, acceptance observation, promotion rule, and state transition contract; a title or phase label is not a checkpoint. For repository implementation governed in Linear, file issues and Git-state issues are separate and additive: a file issue governs exactly one file target and defines that file's single responsibility, inputs, process, outputs, dependencies or interfaces, downstream consumer, and acceptance; a Git-state issue governs exactly one shared repository transition such as branch/PR creation, review handoff, merge, main promotion, rollback, or reconciliation. One module PR groups the complete set of execution-authorized file issues and required Git-state issues with lint, tests, independent qualitative test review, independent implementation QA, and references between Linear records and Git/PR state. Repository SSoT, stack/framework/linter choices, root or module AGENTS instructions, module boundaries, and test layout are project setup; when that setup is part of the request, fix it before implementation. For non-code, one change has one purpose and one atomic target.
-5. **Delegate one bounded target.** Give the worker all authority the PM has and the worker needs inside that target, and none outside it. The worker resolves in-boundary details autonomously and reports completion evidence or one consolidated blocker at the predeclared stop condition. Fail closed only immediately before the affected action and only for that scope; continue safe, unrelated authorized work.
-6. **Accept or reject `Y`.** Require provenance-bearing observation of the declared customer or user outcome and prohibited effects. Links, counts, passing commands, open PRs, unconfigured checks, and agent assertions are supporting signals or evidence references only; they are not acceptance. Do not mark Done from Git state alone. Promote only independently accepted `Y` into active `X`.
-7. **Clean the next `X`.** When the user or SSoT explicitly abandons or replaces code, issues, integrations, or scope, do not retrofit old issues into the new shape; remove obsolete material from active context and preserve only the decision and evidence history still needed. When a decision changes, supersede it, mark only affected dependencies stale, and remove obsolete material from active context while preserving the history needed to explain decisions and evidence.
+1. **Confirmed:** user-confirmed facts and authoritative evidence.
+2. **Proposed:** current recommendations that remain changeable.
+3. **Unknown:** unresolved facts that can change the plan.
+4. **Authority:** permitted reads, writes, external effects, and approvers.
+5. **Stop conditions:** missing or contradictory inputs that prohibit the next stage.
 
-Every control, review, evidence reference, stop, or retry must name the concrete failure or acceptance decision that requires it. Do not add checks, artifacts, agents, or communication merely for formal completeness.
+Do not silently convert an inference, generated output, test result, or summary into a confirmed fact.
 
-## Linear use
+## Operating method
 
-- Use Linear's [official Concepts](https://linear.app/docs/conceptual-model) as the semantic boundary, and inspect the authorized workspace before relying on any entity, field, relation, workflow, or permission.
-- Use the smallest confirmed native Linear primitive that can hold the needed PM meaning. Several meanings may share one native type when that is simpler.
-- Store only what cannot be reconstructed from the authoritative source: the decision or unknown, outcome impact, owner or decider, affected scope, resolution or acceptance evidence, and state.
-- Reuse Linear's native ID, timestamp, assignee, and state history instead of copying them into record bodies.
-- Before an authorized side effect, inspect the actual target state and authority. If a concrete conflict affects the action, use only the smallest evidence-backed stop or recovery needed.
+1. Separate the invariant **Common Kernel** from the target-specific **Project Profile**.
+2. Start with `G0A` (provisional purpose, investigation authority, prohibited actions), perform the read-only `G1` Context Inventory, then establish `G0B` (final goal, scope, authority). This avoids requiring final scope before discovery.
+3. Resolve only blocking unknowns as Context Issues. Do not manufacture a complete future backlog.
+4. Establish contracts, SSoT, a task-specific Context Manifest, Context Lint, customer-language E2E, independent qualitative test review, and atomic implementation planning in that order.
+5. In a code Project Profile, enforce all of these invariants together:
+   - the repository-root `AGENTS.md` uniquely references the current SSoT and Context Manifest;
+   - before implementation, an approved Decision fixes the technical stack, framework, and exact versions;
+   - folders are loosely coupled modules, and every created module has an `AGENTS.md` that states its responsibility, inputs, outputs, allowed dependencies, and prohibited dependencies;
+   - each Atomic Change Issue changes one file, while each module PR includes its lint, tests, independent qualitative review of those tests, and independent implementation QA; and
+   - a Decision change marks affected SSoT, manifests, root/module `AGENTS.md`, plans, code, and tests stale until reviewed atomic updates restore consistency.
+   Satisfying the one-file rule never permits a giant shared module or hidden coupling.
+6. In a non-code Project Profile, map an Atomic Change Issue to one reversible operation purpose, one configuration target, one document responsibility, or another explicitly bounded unit.
+7. Promote an output into active `X` only after its predeclared evidence and independent approval pass. Otherwise retain it as proposed, rejected, failed, or unknown.
+8. Supersede decisions; never rewrite their history. Propagate staleness through SSoT, manifests, E2E, tests, changes, evidence, deployed state, and external side effects.
+9. Run Context Lint continuously as detection. Treat any cleanup rewrite as its own atomic change with regression evidence and independent review.
+10. Close by removing obsolete material from active `X`, archiving only needed history, reconciling external state, and emitting the next minimal Context Manifest.
+
+Fail closed when required authority, SSoT, evidence, ownership, or consistency is missing. A link, commit, passing command, issue count, test count, or agent assertion is not by itself proof of customer outcome.
 
 ## Required references
 
-- Read [references/framework.md](references/framework.md) completely when designing or auditing the system or onboarding a project.
-- Read [references/forward-testing.md](references/forward-testing.md) completely only when independently testing this skill or revising it from an observed result. Do not give that reference to the fresh executor.
+- Read [references/framework.md](references/framework.md) completely when designing or auditing a Linear structure, gate model, SSoT system, Context Lint, E2E/test workflow, or project simulation.
+- The test coordinator and post-run evaluator read [references/forward-testing.md](references/forward-testing.md) completely when independently testing this skill or revising it from observed results. Never give that reference to the fresh executor; give the executor only the inputs allowed by that reference.
 
 ## Output contract
 
-Report only what the current decision or next authorized action needs: the outcome and authority boundary, `X` sources used, actual blockers or stale impact, the next action, and the scoped stop. When source history is mixed, include the active-work separation above; for simple cases, this can be one compact sentence rather than separate headings. In substantive updates, state what is being done, why it advances the current outcome, and the next stop or acceptance point; do not turn this into routine status chatter. Make subjects, predicates, dependencies, and input-process-output flows explicit for the user, PM, worker, reviewer, Linear, repository, and external systems that are in scope. Do not present a proposed Linear structure as existing state or management volume as delivered value.
+For a design or simulation, report:
+
+- the current context declaration and authorization boundary;
+- the Common Kernel separately from the Project Profile;
+- gates with inputs, outputs, owner, approver, exit criteria, and stop conditions;
+- only the blocking Context Issues currently justified;
+- the evidence and stale-propagation rules;
+- what is deliberately not created yet;
+- the next authorized action, or the exact reason work must stop.
+
+Do not present proposed Linear structure as if it already exists. Do not use management volume, formal completeness, or successful self-review as a proxy for delivered value.

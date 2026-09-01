@@ -1,60 +1,90 @@
-# Minimal PM Context
+# Governance Framework
 
-Use this guidance only to make the next justified move toward the customer or user outcome in the user's original words.
+Use this framework to design or audit a project without turning one project's details into universal policy.
 
-## Working model
+## Kernel and profile
 
-`Y = F(X)`: the output is a function of the current input. `X` includes the user originals, governed facts with their SSoT (authoritative source and conflict rule), active decisions, repository/code/tests, and authorized Linear or external state. Only independently accepted output enters the next `X`.
+- **Common Kernel:** invariant governance: authority, state semantics, gates, provenance, evidence, independent review, staleness, atomicity, and fail-closed behavior.
+- **Project Profile:** confirmed target facts: customer outcome, actors, systems, repositories or documents, environments, owners, risks, commands, acceptance observations, rollback or compensation methods, and local conventions.
+- A Profile may instantiate or tighten the Kernel but cannot silently weaken it. Unknown Profile facts remain Context Issues; examples never become Kernel rules.
 
-Apply only the controls, roles, records, reviews, tests, issues, PRs, artifacts, and acceptance evidence references required by the authorized action and the actual customer/user or implementation claim. If the authorized action is Linear planning, required issues include fine-grained inactive decomposition for the accepted known scope, not only execution-active work. Answer-only, audit, discovery, or no-implementation work does not create Linear records, issues, PRs, tests, reviewers, artifacts, or external side effects unless explicitly authorized or needed.
+At every stage declare `Confirmed`, `Proposed`, `Unknown`, `Authority`, and `Stop conditions`. Every gate contract must make these fields explicit: **actor/approver; input; process; output; intended and possible side effects; dependencies; read/write authority; required evidence; stop conditions**. A missing field blocks exit, not necessarily safe read-only discovery.
 
-Read the full user-origin thread relevant to the current request, SSoT, repository, and authorized Linear or external state before requesting new input. Assistant conclusions and generated summaries may locate primary material but do not replace it. When source history is mixed, separate the current request and outcome, past examples or failures, non-goals, authority boundary, and current versus historical evidence; omit absent categories and avoid forced headings for simple cases. Attribute constraints to their source without softening them into vague attribution. Past project outcomes constrain design only as evidence or prohibited effects unless explicitly reopened. Recency alone is not authority. Keep confirmed facts, proposals, unknowns, authority, prohibited effects, and stop conditions distinguishable.
+## Lifecycle and gates
 
-Keep reusable invariants separate from project-specific facts. The reusable invariants are outcome priority, explicit authority and provenance, independent acceptance where required, atomic work, stale marking for changed decisions, minimal work/cost/files/dependencies, and fail-closed behavior scoped to the affected action. Project-specific facts include actors, repositories, tools, versions, commands, identifiers, UI sequences, risks, acceptance context, and recovery choices.
-
-## Minimal lifecycle
-
-These are logical checks, not required meetings, files, Linear records, or response sections. One source or observation may satisfy several checks; combine them whenever doing so preserves the customer/user outcome and authority boundary.
-
-| PMBOK phase | Minimum check and output |
+| Gate | Actor, input, process, output, and exit |
 |---|---|
-| **Initiate** | From the user originals, identify the provisional outcome, read authority, and prohibited effects; inspect only missing primary state; then fix the outcome, non-goals, scope, and execution authority. If outcome, authority, target, or prohibited effect remains ambiguous and would change the next action, ask one focused question; otherwise continue safe discovery without inventing requirements. Reuse confirmed facts unless a concrete contradiction or named irreversible risk reopens them. Output only actual blockers, not a speculative implementation backlog. |
-| **Plan - acceptance** | Before implementation, define the smallest useful customer/user-language E2E happy, failure, and regression paths with prohibited side effects. The tests must fail when the claimed experience is false; their existence, count, or internal coverage is not acceptance. An implementation-independent reviewer checks falsifiability and proxy-metric risk. Accepted tests and scenarios become durable context and stale only when affected by a changed decision; when human-only verification is impractical, project setup defines automated or simulated coverage and reserves human verification for final acceptance. |
-| **Plan — decomposition and execution** | Decompose the known scope into the finest justified atomic Linear issues, then authorize execution only for the current checkpoint. Do not confuse future implementation with future decomposition. Issue count is not a minimization target; a larger issue set is correct when each issue isolates a distinct failure range with its own target, dependency or consumer, and acceptance. Future issues may remain inactive planning context, but they do not authorize implementation, worker assignment, review, merge, or Done. A checkpoint is valid only when it has accepted input, process, output, dependencies, downstream consumers, acceptance observation, promotion rule, and state transition contract; a title or phase label is not a checkpoint. |
-| **Execute and monitor/control** | The worker acts autonomously inside the delegated boundary. Code work is checked at the module PR with lint, tests, independent test review, and independent implementation QA; non-code work uses the smallest equivalent review justified by its risk and acceptance. |
-| **Accept and close** | An authorized acceptor observes the declared outcome and prohibited effects. Promote accepted output only, handle affected external state from authoritative evidence, stale affected dependencies, and remove obsolete active context before forming the next `X`. |
+| **G0A — provisional initiation** | Sponsor and PM receive the unedited request; record provisional purpose, read/investigation authority, prohibited actions, known systems, and discovery stop conditions. Output is a read-only discovery charter, not final scope. |
+| **G1 — Context Inventory** | Authorized investigator reads minimum raw sources and current system state; records provenance, contradictions, unknowns, in-progress work, deployed versions, and external effects. Inspect the target Linear workspace and its authorized interface to confirm which native entity types and operations actually exist, then record the minimal logical-to-native mapping. Output is an evidence-backed inventory plus only blocking Context Issues. No mutation, speculative backlog, or assumed Linear capability. |
+| **G0B — final initiation** | Sponsor/approver uses G1 evidence to confirm goal, non-goals, scope, success/failure observations, owners, authority, risk limits, and stop/rollback obligations. Contradiction or missing approver stops planning. |
+| **G2 — Project Contracts** | Accountable owners define actor/input/process/output/side-effect/dependency/authority/evidence/stop contracts for each material flow. Output is a consistent Profile contract set; ambiguity that changes behavior remains blocking. |
+| **G3 — governed context** | PM assigns each fact to an authoritative SSoT, creates the task's minimal Context Manifest, and runs Context Lint. Output is a provenance-complete active `X`; unresolved conflict, stale dependency, or missing source blocks promotion. |
+| **G4 — acceptance design** | Customer representative writes E2E outcomes in customer language. A reviewer independent of implementation qualitatively challenges whether proposed tests can falsify those outcomes, cover prohibited effects, and avoid proxy metrics. No implementation plan exits before approval. |
+| **G5 — atomic plan** | PM decomposes only approved next work into reversible Atomic Change Issues with dependencies and evidence. Output is the smallest executable plan; avoid future backlog, cross-purpose units, or invented modules. |
+| **G6 — controlled execution** | Authorized worker changes one atomic unit; lint and tests run; an independent reviewer first judges test quality and then QA judges the implementation. A loosely coupled module is the PR checkpoint in code Profiles; use an equivalently bounded review unit in non-code Profiles. Failed evidence stops promotion. |
+| **G7 — real acceptance** | Authorized acceptor observes the declared customer outcome and prohibited side effects in the real acceptance context. Synthetic checks, counts, links, commands, or agent assertions may support but cannot replace this evidence. Output is accepted/rejected/failed with an Evidence envelope. |
+| **G8 — close and next `X`** | PM reconciles deployed and external state, removes obsolete material from active context without erasing required history, archives evidence, closes or carries explicit unknowns, and emits the next minimal Context Manifest. Inconsistency keeps the gate open. |
 
-If information is missing, fail closed immediately before the action it affects and state the resumption condition. Continue safe discovery and unrelated authorized work.
+This sequence maps to initiate (`G0A/G0B`), plan (`G1–G5`), execute and monitor/control (`G6–G7`), and close (`G8`). Do not skip a gate; repeat the smallest affected gate after change.
 
 ## Minimal Linear realization
 
-Inspect the authorized Linear workspace before relying on any entity, field, relation, workflow, or permission. Use the smallest confirmed native primitive that can hold the needed PM meaning; several meanings may share one native type when that is simpler.
+During G1, verify availability, permissions, fields, state transitions, and stable references through authorized reads of the actual Linear workspace or interface. Map each logical record only after that check. Use the smallest combination of confirmed native entities: a Project may hold the governed outcome; a Milestone may represent a Gate; Issues may represent Context Issues and Atomic Change Issues; a Document may hold the SSoT map, Context Manifest, contracts, or Decision register; Comments may append transitions, decisions, and Evidence envelopes; labels may distinguish record kind or current validity. These are candidate mappings, not assumed capabilities.
 
-Use Linear according to its [official concept model](https://linear.app/docs/conceptual-model), not as a generic PM database: issues track individual pieces of work, teams own workflows, cycles plan near-term work, projects group issues around shared outcomes or deliverables, initiatives connect related projects around broader goals, and views organize navigation without changing the work itself. For agent work, follow Linear's [AI Agents](https://linear.app/docs/agents-in-linear) model: delegation to an agent does not remove human ownership. For stale legacy work, follow Linear's [import guidance](https://linear.app/docs/import-issues): activate only what is still needed, and prefer a clean break when history would add clutter.
+Record `logical_type; native_entity_type; native_id; purpose; supported_fields_or_operations; authority; verification_evidence`. If any candidate entity or operation is unavailable or unverified, use another verified primitive or stop with a Context Issue. Never invent a custom field, workflow, immutable history, automation, relation, or permission that G1 did not confirm. Logical semantics remain in the Common Kernel even when several record types share one native primitive.
 
-Store only the minimum PM context that cannot be reconstructed from Git, CI, the repository, or external systems. Record the reason a decision, unknown, owner, accepted output, blocked state, stale state, or evidence reference matters to the next action or customer/user outcome. Reuse Linear's native ID, timestamp, assignee, and state history instead of copying them into record bodies. Use durable approval or checkpoint material only when the user's actual workflow explicitly requires it.
+## Required record schemas
 
-## SSoT, active context, and staleness
+Use stable IDs and timestamps. A record with missing required fields is `incomplete` and cannot authorize downstream work.
 
-- For each governed fact, SSoT means its authoritative source and conflict rule; it does not require copying facts into one central document. For code, Git/PR state is authoritative for changed files and execution artifacts; Linear is authoritative only for PM decisions, owners, acceptance/stale state, and evidence references. Connect them by reference without duplicating raw logs.
-- For repository work, define the Git/Linear transition contract before execution. Each Linear state needs an entry condition, exit condition, authorized mover, and relation to branch, PR, review, merge, main promotion, rollback, or reconciliation. Git state may trigger review or reconciliation, but it does not by itself prove Done.
-- Keep active context to the goal, active decisions, target inputs, authority, active checkpoint issues, and blockers for the next action. Fine-grained future issues may exist in Linear as inactive decomposition, but they are not active `X` until their checkpoint is accepted for execution.
-- Check active context at meaningful boundaries such as session start, a decision change, and immediately before acceptance or promotion. Detect missing provenance, conflict, stale dependency, unauthorized state, and obsolete active context; do not require continuous rewriting or treat a clean check as customer acceptance.
-- When the user or SSoT explicitly abandons or replaces code, issues, integrations, or scope, do not retrofit old issues into the replacement. Remove obsolete material from active `X` and retain only needed decision and evidence history.
-- When a decision changes, supersede rather than overwrite it. Mark affected plans, E2E/tests, artifacts, evidence, deployed state, or external effects stale or blocked, and reopen only the smallest affected work. Remove obsolete material from active `X` while retaining necessary decision and evidence history.
+**Context Issue**
 
-## Code and non-code work
+`id; unknown_or_conflict; outcome_impact; owner; opened_at; source_refs; investigation_authority; required_evidence; dependencies; state; resolution_history; transition_history; resolution_or_stop; updated_at`
 
-- For repository implementation governed in Linear, file issues and Git-state issues are separate and additive. Create every required atomic issue for the known decomposition; only the current checkpoint is execution-authorized. A file issue governs exactly one file target and names that file's single responsibility, inputs, process, outputs, dependencies or interfaces, downstream consumer, and acceptance; "follow SOLID" alone is not enough. A Git-state issue governs exactly one shared repository transition such as branch/PR creation, review handoff, merge, main promotion, rollback, or reconciliation; do not create Linear issues for local git commands or raw logs. One module PR groups the complete set of execution-authorized file issues and required Git-state issues with lint, tests, independent qualitative review of the tests, independent implementation QA, and references between Linear records and Git/PR state.
-- Repository SSoT, stack/framework/linter choices, root or module AGENTS instructions, module boundaries, and test layout are project setup. Fix them before implementation only when setup is part of the request.
-- For non-code work, one atomic change has one purpose and one target.
+States: `open -> investigating -> resolved | blocked | rejected`; reopen `resolved -> open` when its evidence or dependency becomes stale. Append the reopen transition and preserve every prior resolution and its evidence; never rewrite it. Only named evidence resolves the current instance.
+
+**Decision**
+
+`id; question; options_considered; decision; rationale; decider; decision_authority; evidence_refs; affected_nodes; dependencies; decided_at; state; supersedes`
+
+States: `proposed -> approved | rejected`; `approved -> superseded | stale`; never edit an approved decision's substance. A replacement cites `supersedes`, preserves history, and triggers stale propagation.
+
+**Gate**
+
+`id; stage; objective; owner; approver; inputs; process; outputs; side_effects; dependencies; authority; required_evidence; exit_criteria; stop_conditions; state; current_validity; transition_history; decision_refs`
+
+States: `draft -> ready -> active -> passed | failed | blocked`; later invalidation appends `passed -> stale`, and rework may append `stale -> ready -> active`. Reopen the smallest affected gate. Never delete or overwrite the earlier pass: append-only transition history records who changed validity, when, why, and with which evidence, while `current_validity` exposes the latest valid/stale status. Only the approver may pass it.
+
+**Atomic Change Issue**
+
+`id; approved_purpose; bounded_target; owner; independent_reviewers; inputs; process; expected_output; side_effects; dependencies; authority; preconditions; lint_and_tests; acceptance_evidence; rollback_or_compensation; reconciliation; state`
+
+States: `proposed -> ready -> in_progress -> review -> accepted | rejected | failed | rolled_back | compensated`; cancellation records current state and reconciliation. One issue has one reversible purpose and one target responsibility, not necessarily one file.
+
+**Evidence envelope**
+
+`id; claim_or_outcome; acceptance_criteria_ref; raw_artifact_ref; provenance; observed_at; environment_or_context; method; observer; observer_independence; verified_by; verified_at; accepted_or_rejected_by; disposition_at; authority; integrity_ref; result; limitations; side_effects_observed; related_record_ids; state`
+
+States: `captured -> verified -> accepted | rejected | invalid | stale`. Name observer, verifier, and acceptor separately: observation does not imply verification, and verification does not imply disposition. Apply the predeclared independence rule before identities may coincide. An artifact's existence is not verification; acceptance requires the referenced criteria, claim, context, observer, and limitations to match.
+
+## SSoT, manifest, lint, and staleness
+
+- The **SSoT map** assigns each governed fact one current authority, owner, version, and conflict rule. External and repository state remain authoritative for their own facts.
+- A **Context Manifest** lists only the versions and evidence needed for the next authorized action: goal, scope, active Decisions, blocking Context Issues, contracts, affected state, authority, and stop conditions.
+- **Context Lint** continuously detects missing provenance, conflicting authorities, stale references, orphaned decisions, unauthorized state, incomplete records, and obsolete active context. Lint reports findings; it does not rewrite truth.
+- Any cleanup, migration, or refactor is a reviewed Atomic Change Issue with regression evidence. A passing lint result is detection evidence, not customer acceptance.
+
+When a Decision is superseded or evidence invalidates a dependency, traverse `affected_nodes` and dependencies through SSoT entries, manifests, contracts, E2E, tests, changes, evidence, deployed state, and external effects. Mark each dependent `stale` or `blocked`, stop unsafe work, identify the last consistent state, and reopen the earliest affected gate.
 
 ## Live work and side effects
 
-Before an authorized side effect, inspect the actual target state and authority. If a concrete conflict affects the action, use only the smallest evidence-backed stop or recovery needed. Never assume recovery from an export, log, code path, or other unrelated artifact.
+Before changing an in-progress, deployed, or externally effective system, inventory the actual state and owner. Do not assume repository, plan, deployed version, and external state agree. If authority, state, or recovery is uncertain, stop cleanly and preserve evidence.
 
-Use a control, reviewer, evidence item, or retry only when it is required by a named failure or acceptance decision. Do not add them merely for safety. Preserve the required code module-PR lint, tests, independent test review, and independent implementation QA; outside that invariant, choose the smallest control proportional to the actual effect.
+Choose and pre-authorize the recovery action: **stop** before effect; **rollback** a reversible internal change; **compensate** an irreversible external effect with a new traceable action; or **reconcile** divergent authoritative records. Record partial completion and idempotency boundaries. Never label a failed mutation atomic until consistency is restored or the inconsistency is explicitly owned and blocked.
 
-An atomic change delegates all authority the PM holds and the worker needs for one target in a single grant. It does not grant authority outside that target. The worker resolves authorized local unknowns without stepwise approval or routine status exchange; an unresolved condition blocks only when its predeclared stop condition is reached, and is returned as one consolidated blocker.
+## Control rules
 
-Substantive updates state what is being done, why it advances the current outcome, and the next stop or acceptance point. Do not create routine status chatter as a proxy for progress.
+- Fail closed on missing authority, contradictory SSoT, unowned risk, absent evidence, unsafe dependency, or unverifiable side effect; state the exact resumption condition.
+- Preserve isolation: one atomic purpose cannot silently alter another unit, and independent reviewers cannot inherit the implementer's conclusion as evidence.
+- Preserve durability: approved Decisions, evidence, acceptance, rollback, compensation, and reconciliation remain traceable after active context is cleaned.
+- Minimize context, records, dependencies, changes, and gates instantiated for the current outcome. Formal volume, issue counts, test counts, or successful self-review are never value.
