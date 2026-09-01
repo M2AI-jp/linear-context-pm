@@ -30,6 +30,8 @@ If information is missing, fail closed immediately before the action it affects 
 
 Inspect the authorized Linear workspace before relying on any entity, field, relation, workflow, or permission. Use the smallest confirmed native primitive that can hold the needed PM meaning; several meanings may share one native type when that is simpler.
 
+Use Linear in its native grain instead of treating it as a generic database: projects hold shared outcomes, issues hold individual pieces of work, cycles hold near-term focus, initiatives hold cross-project direction, and views are navigation rather than source of truth. Agent delegation in Linear does not remove human ownership. When old work is stale, prefer a clean break over importing or reshaping history unless the user explicitly needs that history active.
+
 Store only the minimum PM context that cannot be reconstructed from Git, CI, the repository, or external systems. Record the reason a decision, unknown, owner, accepted output, blocked state, stale state, or evidence reference matters to the next action or customer outcome. Reuse Linear's native ID, timestamp, assignee, and state history instead of copying them into record bodies. Use durable approval or checkpoint material only when the user's actual workflow explicitly requires it.
 
 ## SSoT, active context, and staleness
