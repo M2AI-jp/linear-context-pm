@@ -18,6 +18,11 @@ Linear を、AI/Codex に作業を任せるための「PM コンテキスト置�
 - E2E、テストレビュー、受け入れ済みの結果だけを次の `X` に入れる
 - Issue、PR、レビューを必要以上に増やさない
 
+## 参考にした考え方
+
+- 『[プロフェッショナルAI駆動開発](https://www.amazon.co.jp/dp/4297157888)』と、技術評論社の[著者コメント](https://gihyo.jp/book/2026/978-4-297-15788-3/content/message)
+- Linear 公式Docsの[Concepts](https://linear.app/docs/conceptual-model)、[AI Agents](https://linear.app/docs/agents-in-linear)、[Importing guidance](https://linear.app/docs/import-issues)
+
 ## 使い方
 
 Codex の skills 配下にこのディレクトリを置き、Linear 中心に PM コンテキストを設計・監査したいときに `$linear-context-pm` を呼び出してください。

@@ -2,7 +2,7 @@
 name: linear-context-pm
 description: "Design or audit Linear-centered PM context for AI/Codex work: source inputs, decisions, accepted outputs, atomic delegation, E2E acceptance, test review, and stale-context cleanup. Use for reusable governance or project onboarding; not ordinary one-off Linear data entry."
 metadata:
-  version: "0.3.7"
+  version: "0.3.8"
 ---
 
 # Linear Context PM
