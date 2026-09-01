@@ -2,19 +2,19 @@
 name: linear-context-pm
 description: "Design or audit Linear-centered PM context for AI/Codex work: source inputs, decisions, accepted outputs, atomic delegation, E2E acceptance, test review, and stale-context cleanup. Use for reusable governance or project onboarding; not ordinary one-off Linear data entry."
 metadata:
-  version: "0.3.8"
+  version: "0.3.9"
 ---
 
 # Linear Context PM
 
-Keep the project input `X` clean so AI/Codex work converges on the customer outcome in the user's original words:
+Keep the project input `X` clean so AI/Codex work converges on the customer or user outcome in the user's original words:
 
 ```text
 Y = F(X)
 current X -> smallest justified action -> Y -> independent acceptance -> accepted Y only -> next X
 ```
 
-`X` includes the relevant user originals, SSoT, decisions, repository/code/tests, and authorized Linear or external context. Linear externalizes PM context: goals, decisions, plans, approvals, owners, stale or blocked state, and evidence references. It must not duplicate raw Git, CI, repository, browser, account, or external-service logs; those systems remain authoritative for their own state.
+`X` includes the relevant user originals, governed facts with their SSoT (authoritative source and conflict rule), decisions, repository/code/tests, and authorized Linear or external context. Linear externalizes PM context: goals, decisions, plans, approvals, owners, stale or blocked state, and acceptance evidence references. It must not duplicate raw Git, CI, repository, browser, account, or external-service logs; those systems remain authoritative for their own state.
 
 ## Scope and authority
 
@@ -32,14 +32,14 @@ Use initiate, plan, execute, monitor/control, and close as PM verbs, not as requ
 3. **Define acceptance before implementation.** Express the smallest useful E2E happy, failure, and regression paths in customer language, including prohibited side effects. A reviewer independent of the implementation qualitatively checks that the tests could falsify the claimed outcome and do not reward proxy metrics. Accepted tests and scenarios become durable context for future work and stale only when affected by a changed decision. When human-only verification is impractical, project setup should define automated or simulated coverage and reserve human verification for final acceptance.
 4. **Plan only the next smallest change.** Minimize code, files, dependencies, cost, and coordination. Do not create future-complete backlogs, placeholder modules, or speculative architecture. For repository implementation governed in Linear, one Linear issue changes one file and must define that file's single responsibility, inputs, outputs, dependencies or interfaces, and acceptance; a generic "follow SOLID" instruction is not sufficient. One module PR groups those file-level issues with lint, tests, independent qualitative test review, and independent implementation QA. Repository SSoT, stack/framework/linter choices, root or module AGENTS instructions, module boundaries, and test layout are project setup; when that setup is part of the request, fix it before implementation. For non-code, one change has one purpose and one atomic target.
 5. **Delegate one bounded target.** Give the worker all authority the PM has and the worker needs inside that target, and none outside it. The worker resolves in-boundary details autonomously and reports completion evidence or one consolidated blocker at the predeclared stop condition. Fail closed only immediately before the affected action and only for that scope; continue safe, unrelated authorized work.
-6. **Accept or reject `Y`.** Require evidence of the declared customer outcome and prohibited effects. Links, counts, passing commands, and agent assertions may support evidence but do not prove the outcome. Promote only independently accepted `Y` into active `X`.
+6. **Accept or reject `Y`.** Require provenance-bearing observation of the declared customer or user outcome and prohibited effects. Links, counts, passing commands, and agent assertions are supporting signals or evidence references only; they are not acceptance. Promote only independently accepted `Y` into active `X`.
 7. **Clean the next `X`.** When the user or SSoT explicitly abandons or replaces code, issues, integrations, or scope, do not retrofit old issues into the new shape; remove obsolete material from active context and preserve only the decision and evidence history still needed. When a decision changes, supersede it, mark only affected dependencies stale, and remove obsolete material from active context while preserving the history needed to explain decisions and evidence.
 
 Every control, review, evidence reference, stop, or retry must name the concrete failure or acceptance decision that requires it. Do not add checks, artifacts, agents, or communication merely for formal completeness.
 
 ## Linear use
 
-- Inspect the authorized Linear workspace before relying on any entity, field, relation, workflow, or permission.
+- Use Linear's [official Concepts](https://linear.app/docs/conceptual-model) as the semantic boundary, and inspect the authorized workspace before relying on any entity, field, relation, workflow, or permission.
 - Use the smallest confirmed native Linear primitive that can hold the needed PM meaning. Several meanings may share one native type when that is simpler.
 - Store only what cannot be reconstructed from the authoritative source: the decision or unknown, outcome impact, owner or decider, affected scope, resolution or acceptance evidence, and state.
 - Reuse Linear's native ID, timestamp, assignee, and state history instead of copying them into record bodies.

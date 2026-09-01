@@ -1,10 +1,10 @@
 # Minimal PM Context
 
-Use this guidance only to make the next justified move toward the customer outcome in the user's original words.
+Use this guidance only to make the next justified move toward the customer or user outcome in the user's original words.
 
 ## Working model
 
-`Y = F(X)`: the output is a function of the current input. `X` includes the user originals, current SSoT, active decisions, repository/code/tests, and authorized Linear or external state. Only independently accepted output enters the next `X`.
+`Y = F(X)`: the output is a function of the current input. `X` includes the user originals, governed facts with their SSoT (authoritative source and conflict rule), active decisions, repository/code/tests, and authorized Linear or external state. Only independently accepted output enters the next `X`.
 
 Apply only the controls, roles, records, reviews, tests, issues, PRs, artifacts, and evidence references required by the next authorized action and the actual customer or implementation claim. Answer-only, audit, discovery, or no-implementation work does not create Linear records, issues, PRs, tests, reviewers, artifacts, or external side effects unless explicitly authorized or needed.
 
@@ -36,7 +36,7 @@ Store only the minimum PM context that cannot be reconstructed from Git, CI, the
 
 ## SSoT, active context, and staleness
 
-- Assign each governed fact one authoritative source and conflict rule. Repository and external systems remain authoritative for their own raw state; Linear holds the PM context that cannot be reconstructed from them.
+- For each governed fact, SSoT means its authoritative source and conflict rule; it does not require copying facts into one central document. Repository and external systems remain authoritative for their own raw state; Linear holds the PM context that cannot be reconstructed from them.
 - Keep active context to the goal, active decisions, target inputs, authority, and blockers for the next action.
 - Check active context at meaningful boundaries such as session start, a decision change, and immediately before acceptance or promotion. Detect missing provenance, conflict, stale dependency, unauthorized state, and obsolete active context; do not require continuous rewriting or treat a clean check as customer acceptance.
 - When the user or SSoT explicitly abandons or replaces code, issues, integrations, or scope, do not retrofit old issues into the replacement. Remove obsolete material from active `X` and retain only needed decision and evidence history.
