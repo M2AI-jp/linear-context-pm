@@ -1,13 +1,17 @@
 ---
 name: linear-context-pm
-description: Design or audit Linear-centered PM context systems for AI/Codex-driven work, including project discovery, SSoT, evidence, gates, tests, and stale-context removal. Use for reusable development governance or project onboarding; do not use for ordinary one-off Linear data entry.
+description: Design or audit AI/Codex development governance that uses Linear to externalize PM context, decisions, state, evidence references, and stale-context cleanup. Use for reusable governance or project onboarding; do not use for ordinary one-off Linear data entry.
 metadata:
-  version: "0.5.1"
+  version: "0.5.2"
 ---
 
 # Linear Context PM
 
-Use Linear as the PM control plane for keeping the project-specific input context `X` clean across AI/Codex sessions:
+Use this skill to prevent AI/Codex work from drifting away from the user/customer outcome through stale context, overimplementation, proxy metrics, existing-code bias, or unverified completion.
+
+Linear is the PM control plane for this purpose. It is a means to externalize goals, decisions, authority, state, blockers, and evidence references; it is not the product goal, code source of truth, raw log store, or progress proxy.
+
+Keep the project-specific input context `X` clean across AI/Codex sessions:
 
 ```text
 unknown X0 -> investigated and governed X1 -> model output Y
@@ -15,6 +19,13 @@ unknown X0 -> investigated and governed X1 -> model output Y
 ```
 
 The repository and external-system state are parts of `X`; Linear is not a replacement for either. Git and CI retain code changes and raw development logs. Linear retains goals, unknowns, decisions, state, evidence references, approval, and the reasoning that cannot be reconstructed from Git.
+
+## Priority hierarchy
+
+1. Keep active `X` clean enough for the next Codex session to act from the current truth.
+2. Use Linear to externalize the procedures and state transitions that protect that cleanliness.
+3. Use SSoT, E2E-first acceptance, atomic decomposition, Git-state linkage, independent test review, implementation QA, stale cleanup, and bounded worker authority only as mechanisms for that purpose.
+4. Reject any metric or artifact--Issue count, test count, SHA, passing command, link, self-review, or management volume--when it becomes a substitute for clean `X` and accepted user/customer outcome.
 
 ## Scope and authority
 
@@ -37,6 +48,10 @@ At the start of each material stage and after any change of direction, state con
 Do not silently convert an inference, generated output, test result, or summary into a confirmed fact.
 
 ## Operating method
+
+Follow the hierarchy above when these steps conflict; lower-level mechanisms never override clean `X` and the accepted user/customer outcome.
+
+Read the steps as a dependency order: define the context boundary, make Linear hold the state and decomposition, then execute bounded work and admit or reject outputs into the next `X`.
 
 1. Separate the invariant **Common Kernel** from the target-specific **Project Profile**.
 2. Start with `G0A` (provisional purpose, investigation authority, prohibited actions), perform the read-only `G1` Context Inventory, then establish `G0B` (final goal, scope, authority). This avoids requiring final scope before discovery.

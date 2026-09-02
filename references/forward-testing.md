@@ -49,6 +49,7 @@ After the evaluator finishes, judge observable behavior and artifacts. Do not gr
 
 Evaluate whether the agent:
 
+- preserved the hierarchy: clean active `X` first, Linear as state/procedure control, and Issues/E2E/Git/review/QA/cleanup as mechanisms rather than goals;
 - discovered material unknowns instead of inventing project facts;
 - distinguished confirmed facts, proposals, unknowns, authority, and stop conditions;
 - stopped or requested authority at the correct boundary;
