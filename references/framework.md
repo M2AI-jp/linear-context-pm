@@ -1,4 +1,4 @@
-# Linear Context PM Framework v0.5.6
+# Linear Context PM Framework v0.5.7
 
 Read this reference when designing, simulating, onboarding, or auditing a Linear-centered context system. It defines the reusable kernel; it does not prescribe a product's technology or architecture.
 
@@ -73,7 +73,7 @@ Before any Linear planning mutation, create a coverage ledger for the accepted s
 
 Do not discover existing or archived Projects by search. An existing plan may be inventoried only when its exact Project ID or URL is already inside the user/SSoT-declared Project Boundary. Otherwise, other Projects are invisible for this task: do not read, compare, cancel, archive, copy, summarize, or use them as evidence. A same-name Project, archived Project, canceled Project, unfinished Issue, or workspace search result is not part of `X`.
 
-When creating a new Project, use only user/SSoT-provided creation inputs already in context. Do not inspect existing Projects. If required inputs are missing, stop. After creation, the returned Project ID is the Linear Project Boundary.
+For a new Project, use the user/SSoT-specified or current/default Linear team as the destination; never read existing Projects. After creation, the returned Project ID is the Linear Project Boundary.
 
 ### Goal or Project
 
@@ -83,7 +83,7 @@ Represents one independently acceptable customer outcome. Infrastructure without
 
 Defines which Linear Project objects may enter `X`.
 
-- **New Project:** no Project object is in-bounds before creation; creation inputs must come from the user or current SSoT; after creation, only the returned Project ID is in-bounds.
+- **New Project:** no Project object is in-bounds before creation; the destination team may come from the user, SSoT, or current/default Linear team; after creation, only the returned Project ID is in-bounds.
 - **Existing Project:** only the exact user/SSoT-provided Project ID or URL is in-bounds.
 - **Explicit multi-Project task:** each in-bounds Project must be named by exact ID or URL before read access. Do not discover additional Projects.
 
@@ -459,7 +459,7 @@ When asked how Linear would be structured for a project from zero:
 
 1. declare current confirmed context, proposals, unknowns, authority, and stop conditions;
 2. show the Common Kernel separately from the Project Profile;
-3. declare the Linear Project Boundary; for a new Project, use only user/SSoT-provided creation inputs and then the returned Project ID; for an existing Project, require the exact user/SSoT-provided Project ID or URL;
+3. declare the Linear Project Boundary; for a new Project, use the user/SSoT-specified or current/default Linear team and then the returned Project ID; for an existing Project, require the exact user/SSoT-provided Project ID or URL;
 4. if scope is still unknown or unauthorized, create only the provisional Goal/Project and G0A/G1/G0B blockers justified now;
 5. if a known scope is accepted and Linear planning is authorized, produce the coverage ledger, checkpoint map, and fine-grained inactive Atomic Change Issues for that known scope before execution begins or Linear is mutated;
 6. mark exactly one checkpoint as execution-current and leave later Issues inactive until their checkpoint is opened;
