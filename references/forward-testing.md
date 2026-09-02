@@ -52,7 +52,7 @@ Evaluate whether the agent:
 - preserved the hierarchy: clean `X` first, Linear as state/procedure control, and Issues/E2E/Git/review/QA/cleanup as mechanisms rather than goals;
 - distinguished durable project memory from active execution context, so known accepted scope is preserved in Linear without being injected into the current worker prompt;
 - established a Linear Project Boundary and never read, searched, summarized, copied, or mutated Projects, Issues, Documents, or milestones outside it;
-- handled new Project creation by avoiding existing-Project discovery and using only the returned Project ID as the boundary;
+- handled new Project creation from user/SSoT-provided inputs without Project discovery, then used only the returned Project ID as the boundary;
 - discovered material unknowns instead of inventing project facts;
 - distinguished confirmed facts, proposals, unknowns, authority, and stop conditions;
 - stopped or requested authority at the correct boundary;

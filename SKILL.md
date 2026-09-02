@@ -2,7 +2,7 @@
 name: linear-context-pm
 description: Design or audit AI/Codex development governance that uses Linear to externalize PM context, decisions, state, evidence references, and stale-context cleanup. Use for reusable governance or project onboarding; do not use for ordinary one-off Linear data entry.
 metadata:
-  version: "0.5.5"
+  version: "0.5.6"
 ---
 
 # Linear Context PM
@@ -42,7 +42,7 @@ Clean `X` requires both layers: do not inject inactive future work into the acti
 - Mutate Linear or an external system only when the user explicitly authorizes that mutation and its scope.
 - Treat project examples as Project Profiles, not universal rules. Never universalize a provider, language, repository layout, data store, or interaction mode from one example.
 - Linear work is scoped to an explicit Project Boundary. Do not read, search, list, compare, cancel, archive, copy, or summarize Projects, Issues, Documents, or milestones outside that boundary.
-- If creating a new Linear Project, do not inspect existing Projects to check duplicates, find archives, or disable old work. Use only non-project workspace metadata needed to create it, then treat the returned Project ID as the boundary.
+- If creating a new Linear Project, use only user/SSoT-provided creation inputs already in context. Do not inspect existing Projects. If required inputs are missing, stop. The returned Project ID becomes the boundary.
 - If work on an existing Project is required, the user or current SSoT must provide the exact Project ID or URL before any Project read. A name search, similar title, archived state, canceled state, or unfinished Issue is not authority.
 
 ## Declare context before proceeding
@@ -65,7 +65,7 @@ Read the steps as a dependency order: define the context boundary, make Linear h
 
 1. Separate the invariant **Common Kernel** from the target-specific **Project Profile**.
 2. Start with `G0A` (provisional purpose, investigation authority, prohibited actions), perform the read-only `G1` Context Inventory, then establish `G0B` (final goal, scope, authority). This avoids requiring final scope before discovery.
-3. Establish the Linear Project Boundary before any Project-level read or write. For a new Project, create it without reading existing Projects; for an existing Project, use only the exact user/SSoT-provided Project ID or URL.
+3. Establish the Linear Project Boundary before any Project-level read or write. For a new Project, create it only from user/SSoT-provided inputs; for an existing Project, use only the exact user/SSoT-provided Project ID or URL.
 4. Separate Linear decomposition from execution. Before any Linear planning write, draft a coverage ledger for user-accepted scope: scope item, classification (`current execution`, `inactive planned`, `unknown`, or `excluded`), representing Linear object, consumer or acceptance path, and omitted reason. If an accepted item is represented only by a checkpoint title, postponed because execution is not yet authorized, or omitted without proof that it is duplicate, invalid, stale, or out of scope, stop before mutation. Unknown or unaccepted items receive Context Issues, not implementation Issues. Minimize code, files, dependencies, cost, simultaneous work, and active execution context, not useful Linear issue count.
 5. Establish contracts, SSoT, a task-specific Context Manifest, Context Lint, customer-language E2E, independent qualitative test review, and atomic implementation planning in that order.
 6. In a code Project Profile, enforce these invariants together: the root `AGENTS.md` points to the current SSoT and Context Manifest; approved Decisions fix the stack, framework, exact versions, and linter before implementation; folders are loosely coupled modules with module `AGENTS.md`; each file-changing Issue changes one file; Git-state Issues separately govern branch, PR, review handoff, merge, main promotion, rollback, or reconciliation; each module PR includes lint, tests, independent review of the tests, and independent implementation QA.
