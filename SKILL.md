@@ -2,7 +2,7 @@
 name: linear-context-pm
 description: Design or audit AI/Codex development governance that uses Linear to externalize PM context, decisions, state, evidence references, and stale-context cleanup. Use for reusable governance or project onboarding; do not use for ordinary one-off Linear data entry.
 metadata:
-  version: "0.5.3"
+  version: "0.5.5"
 ---
 
 # Linear Context PM
@@ -41,6 +41,9 @@ Clean `X` requires both layers: do not inject inactive future work into the acti
 - A request to design, simulate, explain, or audit does not authorize writes to Linear, repositories, browsers, SaaS products, or production systems.
 - Mutate Linear or an external system only when the user explicitly authorizes that mutation and its scope.
 - Treat project examples as Project Profiles, not universal rules. Never universalize a provider, language, repository layout, data store, or interaction mode from one example.
+- Linear work is scoped to an explicit Project Boundary. Do not read, search, list, compare, cancel, archive, copy, or summarize Projects, Issues, Documents, or milestones outside that boundary.
+- If creating a new Linear Project, do not inspect existing Projects to check duplicates, find archives, or disable old work. Use only non-project workspace metadata needed to create it, then treat the returned Project ID as the boundary.
+- If work on an existing Project is required, the user or current SSoT must provide the exact Project ID or URL before any Project read. A name search, similar title, archived state, canceled state, or unfinished Issue is not authority.
 
 ## Declare context before proceeding
 
@@ -62,15 +65,16 @@ Read the steps as a dependency order: define the context boundary, make Linear h
 
 1. Separate the invariant **Common Kernel** from the target-specific **Project Profile**.
 2. Start with `G0A` (provisional purpose, investigation authority, prohibited actions), perform the read-only `G1` Context Inventory, then establish `G0B` (final goal, scope, authority). This avoids requiring final scope before discovery.
-3. Separate Linear decomposition from execution. Before any Linear planning write, draft a coverage ledger for user-accepted scope: scope item, classification (`current execution`, `inactive planned`, `unknown`, or `excluded`), representing Linear object, consumer or acceptance path, and omitted reason. If an accepted item is represented only by a checkpoint title, postponed because execution is not yet authorized, or omitted without proof that it is duplicate, invalid, stale, or out of scope, stop before mutation. Unknown or unaccepted items receive Context Issues, not implementation Issues. Minimize code, files, dependencies, cost, simultaneous work, and active execution context, not useful Linear issue count.
-4. Establish contracts, SSoT, a task-specific Context Manifest, Context Lint, customer-language E2E, independent qualitative test review, and atomic implementation planning in that order.
-5. In a code Project Profile, enforce these invariants together: the root `AGENTS.md` points to the current SSoT and Context Manifest; approved Decisions fix the stack, framework, exact versions, and linter before implementation; folders are loosely coupled modules with module `AGENTS.md`; each file-changing Issue changes one file; Git-state Issues separately govern branch, PR, review handoff, merge, main promotion, rollback, or reconciliation; each module PR includes lint, tests, independent review of the tests, and independent implementation QA.
-6. In a non-code Project Profile, map an Atomic Change Issue to one reversible operation purpose, one configuration target, one document responsibility, or another explicitly bounded unit.
-7. At execution time, give the worker one complete boundary: purpose, target, SSoT inputs, all read/write/tool/effect authority already held by the PM and required inside that boundary, prohibited effects, acceptance criteria, and stop conditions. The worker acts autonomously inside that boundary and does not ask for stepwise approval unless a stop condition is reached.
-8. Promote an output into project memory or active execution context only after its predeclared evidence and independent approval pass. Otherwise retain it as proposed, rejected, failed, or unknown.
-9. Supersede decisions; never rewrite their history. Propagate staleness through SSoT, manifests, E2E, tests, changes, evidence, deployed state, and external side effects.
-10. Run Context Lint continuously as detection. Treat any cleanup rewrite as its own atomic change with regression evidence and independent review.
-11. Close by removing obsolete material from current SSoT/Manifest and active execution context, archiving only needed history, reconciling external state, and emitting the next minimal Context Manifest.
+3. Establish the Linear Project Boundary before any Project-level read or write. For a new Project, create it without reading existing Projects; for an existing Project, use only the exact user/SSoT-provided Project ID or URL.
+4. Separate Linear decomposition from execution. Before any Linear planning write, draft a coverage ledger for user-accepted scope: scope item, classification (`current execution`, `inactive planned`, `unknown`, or `excluded`), representing Linear object, consumer or acceptance path, and omitted reason. If an accepted item is represented only by a checkpoint title, postponed because execution is not yet authorized, or omitted without proof that it is duplicate, invalid, stale, or out of scope, stop before mutation. Unknown or unaccepted items receive Context Issues, not implementation Issues. Minimize code, files, dependencies, cost, simultaneous work, and active execution context, not useful Linear issue count.
+5. Establish contracts, SSoT, a task-specific Context Manifest, Context Lint, customer-language E2E, independent qualitative test review, and atomic implementation planning in that order.
+6. In a code Project Profile, enforce these invariants together: the root `AGENTS.md` points to the current SSoT and Context Manifest; approved Decisions fix the stack, framework, exact versions, and linter before implementation; folders are loosely coupled modules with module `AGENTS.md`; each file-changing Issue changes one file; Git-state Issues separately govern branch, PR, review handoff, merge, main promotion, rollback, or reconciliation; each module PR includes lint, tests, independent review of the tests, and independent implementation QA.
+7. In a non-code Project Profile, map an Atomic Change Issue to one reversible operation purpose, one configuration target, one document responsibility, or another explicitly bounded unit.
+8. At execution time, give the worker one complete boundary: purpose, target, SSoT inputs, all read/write/tool/effect authority already held by the PM and required inside that boundary, prohibited effects, acceptance criteria, and stop conditions. The worker acts autonomously inside that boundary and does not ask for stepwise approval unless a stop condition is reached.
+9. Promote an output into project memory or active execution context only after its predeclared evidence and independent approval pass. Otherwise retain it as proposed, rejected, failed, or unknown.
+10. Supersede decisions; never rewrite their history. Propagate staleness through SSoT, manifests, E2E, tests, changes, evidence, deployed state, and external side effects.
+11. Run Context Lint continuously as detection. Treat any cleanup rewrite as its own atomic change with regression evidence and independent review.
+12. Close by removing obsolete material from current SSoT/Manifest and active execution context, archiving only needed history, reconciling external state, and emitting the next minimal Context Manifest.
 
 Fail closed when required authority, SSoT, evidence, ownership, or consistency is missing. A link, commit, passing command, issue count, test count, or agent assertion is not by itself proof of customer outcome.
 
@@ -85,6 +89,7 @@ For a design or simulation, report:
 
 - the current context declaration and authorization boundary;
 - the Common Kernel separately from the Project Profile;
+- the Linear Project Boundary, including whether it is a newly returned Project ID or an exact user/SSoT-provided existing Project ID or URL;
 - gates with inputs, outputs, owner, approver, exit criteria, and stop conditions;
 - the pre-write coverage ledger for accepted scope, blocking Context Issues, the fine-grained inactive decomposition, and the single current execution checkpoint;
 - the evidence and stale-propagation rules;

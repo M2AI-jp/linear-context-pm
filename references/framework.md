@@ -1,4 +1,4 @@
-# Linear Context PM Framework v0.5.3
+# Linear Context PM Framework v0.5.5
 
 Read this reference when designing, simulating, onboarding, or auditing a Linear-centered context system. It defines the reusable kernel; it does not prescribe a product's technology or architecture.
 
@@ -65,17 +65,29 @@ Project-specific facts remain unknown until a user or authoritative source confi
 
 ## 3. Linear object model
 
-Read the objects below as a dependency chain, not a menu: the Goal defines the customer outcome; Gates control lifecycle state; Context Issues and Decisions remove uncertainty; SSoT and Context Manifest define current truth and active execution context; Atomic Change Issues and checkpoints bound execution; Evidence decides whether an output may enter the next `X`.
+Read the objects below as a dependency chain, not a menu: the Goal defines the customer outcome; the Linear Project Boundary prevents cross-project context contamination; Gates control lifecycle state; Context Issues and Decisions remove uncertainty; SSoT and Context Manifest define current truth and active execution context; Atomic Change Issues and checkpoints bound execution; Evidence decides whether an output may enter the next `X`.
 
 Use Linear's native structures first: Issues for individual work, Projects for customer outcomes, Milestones for meaningful stages or checkpoints, team workflow statuses for state, and configured Git integrations for PR or commit links. Rely on automation only after the current workspace shows it is configured. "Smallest" means the least custom machinery, not fewer useful Issues. If Linear planning is authorized for a known scope, preserve or create the atomic Issues needed to represent that scope while keeping non-current checkpoints inactive.
 
 Before any Linear planning mutation, create a coverage ledger for the accepted scope. Each row records the scope item, classification (`current execution`, `inactive planned`, `unknown`, or `excluded`), representing Linear object, consumer or acceptance path, and omitted reason. Do not mutate Linear if an accepted scope item is only named in a checkpoint title, postponed because execution is not yet authorized, or omitted without evidence that it is duplicate, invalid, stale, or out of scope.
 
-If an existing or archived plan exists, inventory its decomposition before replacing it: responsibilities, failure ranges, dependencies, consumers, acceptance paths, and issue count only as a degradation signal. Do not compress real coverage into broader units unless the user explicitly chooses reduced scope or the old unit is proven duplicate, invalid, or stale. A bad old plan may be abandoned, but useful coverage must be preserved or deliberately superseded by finer, cleaner decomposition.
+Do not discover existing or archived Projects by search. An existing plan may be inventoried only when its exact Project ID or URL is already inside the user/SSoT-declared Project Boundary. Otherwise, other Projects are invisible for this task: do not read, compare, cancel, archive, copy, summarize, or use them as evidence. A same-name Project, archived Project, canceled Project, unfinished Issue, or workspace search result is not part of `X`.
+
+When creating a new Project, do not inspect existing Projects to check duplicates or disable old work. Use only non-project workspace metadata required to create the Project, such as team or workflow metadata. After creation, the returned Project ID is the Linear Project Boundary. If the user asks to disable "existing Projects" without exact Project IDs or URLs, stop that subtask instead of searching.
 
 ### Goal or Project
 
 Represents one independently acceptable customer outcome. Infrastructure without independent customer value belongs inside the outcome's gates or module checkpoints unless the Project Profile establishes a real separate consumer.
+
+### Linear Project Boundary
+
+Defines which Linear Project objects may enter `X`.
+
+- **New Project:** no Project object is in-bounds before creation; after creation, only the returned Project ID is in-bounds.
+- **Existing Project:** only the exact user/SSoT-provided Project ID or URL is in-bounds.
+- **Explicit multi-Project task:** each in-bounds Project must be named by exact ID or URL before read access. Do not discover additional Projects.
+
+Never use global Project search, similar names, archived/canceled state, or unfinished Issues to infer the boundary.
 
 ### Gate
 
@@ -199,12 +211,12 @@ The Gate sequence is a dependency order, not a mandate to create every possible 
 ### G1 — Read-only Context Inventory
 
 - **Input:** accepted G0A.
-- **Process:** inspect only authorized primary sources, repositories, runtime descriptions, external-system metadata, prior Decisions, and known evidence.
-- **Output:** source inventory, authority map draft, contradictions, stale candidates, missing access, and only the unknowns that block G0B or the next Gate.
+- **Process:** inspect only authorized primary sources, repositories, runtime descriptions, external-system metadata, prior Decisions, known evidence, and Linear objects inside the Project Boundary. For a new Linear Project, inspect no existing Project objects.
+- **Output:** source inventory, Linear Project Boundary, authority map draft, contradictions, stale candidates inside the boundary, missing access, and only the unknowns that block G0B or the next Gate.
 - **Owner:** investigator.
 - **Approver:** PM; a domain owner confirms disputed facts.
 - **Exit:** current evidence and uncertainty are traceable; no mutation occurred.
-- **Stop:** a required source is unavailable, an external read needs new authority, or sources conflict without a named resolver.
+- **Stop:** a required source is unavailable, an external read needs new authority, a Project read lacks an exact in-bound Project ID or URL, or sources conflict without a named resolver.
 
 ### G0B — Final outcome, scope, and authority
 
@@ -370,6 +382,7 @@ Context Lint detects; it does not silently rewrite. Project Profiles enable only
 - conflicting or duplicated active authorities;
 - stale references after Decision supersession;
 - active instructions pointing to archived code, tests, or plans;
+- Linear objects from outside the Project Boundary entering context or mutation targets;
 - broken evidence links or evidence/revision mismatch;
 - completed claims without an evidence envelope;
 - unexecuted, flaky, synthetic, or unknown results represented as pass;
@@ -446,10 +459,11 @@ When asked how Linear would be structured for a project from zero:
 
 1. declare current confirmed context, proposals, unknowns, authority, and stop conditions;
 2. show the Common Kernel separately from the Project Profile;
-3. if scope is still unknown or unauthorized, create only the provisional Goal/Project and G0A/G1/G0B blockers justified now;
-4. if a known scope is accepted and Linear planning is authorized, produce the coverage ledger, checkpoint map, and fine-grained inactive Atomic Change Issues for that known scope before execution begins or Linear is mutated;
-5. mark exactly one checkpoint as execution-current and leave later Issues inactive until their checkpoint is opened;
-6. show evidence envelopes, stale propagation, fail-closed behavior, Git/Linear state transitions, and cleanup into the next `X`;
-7. state explicitly which technologies, files, external mutations, and execution authorities are still not created or not authorized.
+3. declare the Linear Project Boundary; for a new Project, create without reading existing Projects and use the returned Project ID; for an existing Project, require the exact user/SSoT-provided Project ID or URL;
+4. if scope is still unknown or unauthorized, create only the provisional Goal/Project and G0A/G1/G0B blockers justified now;
+5. if a known scope is accepted and Linear planning is authorized, produce the coverage ledger, checkpoint map, and fine-grained inactive Atomic Change Issues for that known scope before execution begins or Linear is mutated;
+6. mark exactly one checkpoint as execution-current and leave later Issues inactive until their checkpoint is opened;
+7. show evidence envelopes, stale propagation, fail-closed behavior, Git/Linear state transitions, and cleanup into the next `X`;
+8. state explicitly which technologies, files, external mutations, and execution authorities are still not created or not authorized.
 
 A useful simulation demonstrates how the framework discovers project-specific facts. It does not masquerade invented project detail as a complete implementation plan.
