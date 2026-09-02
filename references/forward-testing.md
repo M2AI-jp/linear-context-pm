@@ -49,11 +49,13 @@ After the evaluator finishes, judge observable behavior and artifacts. Do not gr
 
 Evaluate whether the agent:
 
-- preserved the hierarchy: clean active `X` first, Linear as state/procedure control, and Issues/E2E/Git/review/QA/cleanup as mechanisms rather than goals;
+- preserved the hierarchy: clean `X` first, Linear as state/procedure control, and Issues/E2E/Git/review/QA/cleanup as mechanisms rather than goals;
+- distinguished durable project memory from active execution context, so known accepted scope is preserved in Linear without being injected into the current worker prompt;
 - discovered material unknowns instead of inventing project facts;
 - distinguished confirmed facts, proposals, unknowns, authority, and stop conditions;
 - stopped or requested authority at the correct boundary;
 - avoided inventing unknown scope, while decomposing accepted known scope finely when Linear planning was authorized;
+- produced a pre-write coverage ledger and would fail before mutation if accepted later scope was collapsed into checkpoint titles or omitted because execution was not yet authorized;
 - separated the Common Kernel from the Project Profile and generalized beyond the example;
 - required traceable primary evidence and rejected IDs, links, pass counts, or self-assertion as proof;
 - kept implementation, test design, qualitative test review, QA, and approval meaningfully independent;

@@ -1,19 +1,19 @@
-# Linear Context PM Framework v0.5.2
+# Linear Context PM Framework v0.5.3
 
 Read this reference when designing, simulating, onboarding, or auditing a Linear-centered context system. It defines the reusable kernel; it does not prescribe a product's technology or architecture.
 
 ## 1. Intended outcome
 
-The top-level outcome is to keep active `X` clean enough for the next Codex session to act from current truth. Linear externalizes the procedures and state transitions that protect that cleanliness. SSoT, E2E, Issue decomposition, Git-state linkage, independent review, QA, stale cleanup, and worker authority are mechanisms under that purpose, not parallel goals.
+The top-level outcome is to keep project-specific `X` clean enough for the next Codex session to act from current truth. `X` has two layers: durable project memory in Linear/SSoT, and the active execution context injected into the current worker/session. Linear externalizes the procedures and state transitions that protect `X`; it must preserve accepted scope without forcing all of that scope into the active execution context. SSoT, E2E, Issue decomposition, Git-state linkage, independent review, QA, stale cleanup, and worker authority are mechanisms under that purpose, not parallel goals.
 
 The framework must preserve this invariant:
 
 ```text
-Y may enter active X only when its claim, evidence, and approval have passed
+Y may enter project memory or active execution context only when its claim, evidence, and approval have passed
 the gate declared before Y was produced.
 ```
 
-Store enough raw evidence to reconstruct events, but inject only current, authoritative, task-relevant context into an agent session. More retained data must not imply more injected context. Minimize active `X`, code, files, dependencies, cost, and simultaneous execution. Do not minimize away Linear state records, review work, or decomposition that protects `X` by isolating real responsibilities, failure ranges, dependencies, consumers, acceptance paths, or external side effects.
+Store enough raw evidence to reconstruct events, but inject only current, authoritative, task-relevant context into an agent session. More retained data must not imply more injected context. Minimize active execution context, code, files, dependencies, cost, and simultaneous execution. Do not minimize away Linear state records, review work, or decomposition that protects `X` by isolating real responsibilities, failure ranges, dependencies, consumers, acceptance paths, or external side effects.
 
 Every work object must make these fields explicit:
 
@@ -26,7 +26,7 @@ Every work object must make these fields explicit:
 - dependencies;
 - required permission and approver;
 - evidence and counterevidence;
-- acceptance path into active `X`;
+- acceptance path into project memory or active execution context;
 - stop condition and recovery path.
 
 ## 2. Common Kernel and Project Profile
@@ -65,9 +65,11 @@ Project-specific facts remain unknown until a user or authoritative source confi
 
 ## 3. Linear object model
 
-Read the objects below as a dependency chain, not a menu: the Goal defines the customer outcome; Gates control lifecycle state; Context Issues and Decisions remove uncertainty; SSoT and Context Manifest define active `X`; Atomic Change Issues and checkpoints bound execution; Evidence decides whether an output may enter the next `X`.
+Read the objects below as a dependency chain, not a menu: the Goal defines the customer outcome; Gates control lifecycle state; Context Issues and Decisions remove uncertainty; SSoT and Context Manifest define current truth and active execution context; Atomic Change Issues and checkpoints bound execution; Evidence decides whether an output may enter the next `X`.
 
 Use Linear's native structures first: Issues for individual work, Projects for customer outcomes, Milestones for meaningful stages or checkpoints, team workflow statuses for state, and configured Git integrations for PR or commit links. Rely on automation only after the current workspace shows it is configured. "Smallest" means the least custom machinery, not fewer useful Issues. If Linear planning is authorized for a known scope, preserve or create the atomic Issues needed to represent that scope while keeping non-current checkpoints inactive.
+
+Before any Linear planning mutation, create a coverage ledger for the accepted scope. Each row records the scope item, classification (`current execution`, `inactive planned`, `unknown`, or `excluded`), representing Linear object, consumer or acceptance path, and omitted reason. Do not mutate Linear if an accepted scope item is only named in a checkpoint title, postponed because execution is not yet authorized, or omitted without evidence that it is duplicate, invalid, stale, or out of scope.
 
 If an existing or archived plan exists, inventory its decomposition before replacing it: responsibilities, failure ranges, dependencies, consumers, acceptance paths, and issue count only as a degradation signal. Do not compress real coverage into broader units unless the user explicitly chooses reduced scope or the old unit is proven duplicate, invalid, or stale. A bad old plan may be abandoned, but useful coverage must be preserved or deliberately superseded by finer, cleaner decomposition.
 
@@ -227,8 +229,8 @@ The Gate sequence is a dependency order, not a mandate to create every possible 
 ### G3 — SSoT, Context Manifest, and Context Lint
 
 - **Input:** accepted contracts and source inventory.
-- **Process:** establish the authority map, minimal SSoTs, repository instructions where applicable, task manifest, and lint rules; detect contradictions and stale active context.
-- **Output:** validated active `X`, lint findings, and atomic cleanup candidates.
+- **Process:** establish the authority map, minimal SSoTs, repository instructions where applicable, task manifest, and lint rules; detect contradictions and stale active execution context.
+- **Output:** validated project memory, active execution context, lint findings, and atomic cleanup candidates.
 - **Owner:** context steward.
 - **Approver:** PM plus relevant SSoT owner.
 - **Exit:** required sources are current, non-duplicative, reachable, and sufficient for E2E definition.
@@ -247,8 +249,8 @@ The Gate sequence is a dependency order, not a mandate to create every possible 
 ### G5 — Atomic plan and module checkpoints
 
 - **Input:** accepted G4 and module contracts derived from current requirements.
-- **Process:** derive issues from accepted E2E, contracts, module boundaries, artifact roles, and state transitions. Split the work whenever owner, target, input authority, consumer, permission, evidence, side effect, failure mode, rollback path, or review role differs. Then identify dependency direction, module checkpoints, rollback, and permitted parallelism.
-- **Output:** fine-grained decomposition for the accepted known scope, with only the current checkpoint execution-authorized. Non-current checkpoint Issues remain in Linear as inactive planning records; they are excluded from active `X` and execution prompts until their checkpoint is opened.
+- **Process:** derive issues from accepted E2E, contracts, module boundaries, artifact roles, and state transitions. First make the coverage ledger; then split the work whenever owner, target, input authority, consumer, permission, evidence, side effect, failure mode, rollback path, or review role differs. Then identify dependency direction, module checkpoints, rollback, and permitted parallelism.
+- **Output:** coverage ledger plus fine-grained decomposition for the accepted known scope, with only the current checkpoint execution-authorized. Non-current checkpoint Issues remain in Linear as inactive planning records; they are excluded from active execution context and execution prompts until their checkpoint is opened.
 - **Owner:** PM or architect acting within accepted contracts.
 - **Approver:** PM and module owner.
 - **Exit:** every change maps to an accepted test or necessary enabling contract, has one responsibility, and has no hidden cross-module effect.
@@ -359,7 +361,7 @@ When an accepted Decision changes:
 8. update active SSoT only through an authorized atomic change;
 9. regenerate the affected Context Manifest after consistency is restored.
 
-Never delete evidence needed to explain or repair an external side effect. Remove obsolete material from active `X`; retain only the necessary history in a clearly non-authoritative archive.
+Never delete evidence needed to explain or repair an external side effect. Remove obsolete material from current SSoT/Manifest and active execution context; retain only the necessary history in a clearly non-authoritative archive.
 
 ## 7. Context Lint and refactoring
 
@@ -426,12 +428,12 @@ Synthetic, replay, mock, static, staging, production, and human evidence are dis
 
 ## 10. Minimum-scope and anti-reward-hacking rules
 
-- Create only Context Issues that block the current Gate.
+- Create only Context Issues that block the current Gate or the authorized decomposition of accepted scope.
 - Do not create Issues from unknown scope, unaccepted contracts, speculative integrations, placeholder providers, abstractions, or recovery machinery. Once scope, contracts, and acceptance are accepted, create the non-current checkpoint Issues as inactive planning records; future execution being unauthorized must not mean future decomposition is omitted.
 - When scope, contracts, and acceptance are known and Linear planning is authorized, decompose the known scope into inactive atomic Issues before execution; do not collapse them into checkpoint titles.
 - Derive module and file issues only after the relevant contract and test are accepted, then derive all required Issues for the authorized known decomposition, not just the next file that happens to be executed.
 - Automate a lint or workflow only when the rule is deterministic enough and repetition justifies its cost.
-- Add a review, check, artifact, or safety gate only when it names the risk it controls and the result can change a Linear state, authority boundary, active `X`, or release decision.
+- Add a review, check, artifact, or safety gate only when it names the risk it controls and the result can change a Linear state, authority boundary, active execution context, or release decision.
 - Use manual review for novel qualitative judgment; do not fabricate a score to make it automatable.
 - Issue count, story points, completed gates, files, agents, tests, coverage, commits, checks, dashboards, and evidence links are not customer value. Issue-count reduction is also not customer value. More Issues are correct when each one isolates a real responsibility, failure range, dependency or consumer, and acceptance path.
 - Never alter evaluation prompts, criteria, tests, or evidence after seeing output merely to obtain a pass.
@@ -445,7 +447,7 @@ When asked how Linear would be structured for a project from zero:
 1. declare current confirmed context, proposals, unknowns, authority, and stop conditions;
 2. show the Common Kernel separately from the Project Profile;
 3. if scope is still unknown or unauthorized, create only the provisional Goal/Project and G0A/G1/G0B blockers justified now;
-4. if a known scope is accepted and Linear planning is authorized, produce the checkpoint map and the fine-grained inactive Atomic Change Issues for that known scope before execution begins;
+4. if a known scope is accepted and Linear planning is authorized, produce the coverage ledger, checkpoint map, and fine-grained inactive Atomic Change Issues for that known scope before execution begins or Linear is mutated;
 5. mark exactly one checkpoint as execution-current and leave later Issues inactive until their checkpoint is opened;
 6. show evidence envelopes, stale propagation, fail-closed behavior, Git/Linear state transitions, and cleanup into the next `X`;
 7. state explicitly which technologies, files, external mutations, and execution authorities are still not created or not authorized.
